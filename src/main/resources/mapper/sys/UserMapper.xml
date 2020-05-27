@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lemenk.sys.mapper.UserMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.lemenk.sys.entity.User">
+        <id column="id" property="id" />
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="status" property="status" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, username, password, status, create_time, update_time
+    </sql>
+
+    <!--重置用户密码-->
+    <update id="updateUserByUsername" parameterType="top.lemenk.sys.entity.User">
+        update tb_user
+        set password=#{password}
+        where username=#{username}
+    </update>
+
+    <update id="updatePwd">
+        update tb_user
+        set password=#{user}
+    </update>
+
+    <!-- 用户登陆 -->
+    <select id="login" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where username=#{username} and password=#{password}
+    </select>
+
+    <!--根据用户名删除用户-->
+    <delete id="deleteUserByUsername" parameterType="string">
+        delete from tb_user where username=#{username}
+    </delete>
+</mapper>
+
+

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lemenk.sys.mapper.NewsMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.lemenk.sys.entity.News">
+        <id column="id" property="id" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+        <result column="oper_name" property="operName" />
+        <result column="create_time" property="createTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, title, content, oper_name, create_time
+    </sql>
+
+    <!--查询所有的新闻-->
+    <select id="queryAllNews" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_news
+        <where>
+            <if test="title!=null and title!=''">
+                and title like concat("%",#{title},"%")
+            </if>
+            <if test="content!=null and content!=''">
+                and content like concat("%",#{content},"%")
+            </if>
+            <if test="startTime!=null">
+                and create_time >=#{startTime}
+            </if>
+            <if test="endTime!=null">
+                and create_time <![CDATA[<=]]> #{endTime}
+            </if>
+        </where>
+        order by create_time desc
+    </select>
+
+</mapper>

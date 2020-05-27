@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lemenk.sys.mapper.TeacherMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.lemenk.sys.entity.Teacher">
+        <id column="id" property="id" />
+        <result column="techId" property="techId" />
+        <result column="techName" property="techName" />
+        <result column="techDept" property="techDept" />
+        <result column="email" property="email" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, techId, techName, techDept, email
+    </sql>
+
+    <!--查询所有教师的信息-->
+    <select id="queryAllTeacher" resultMap="BaseResultMap">
+        select t.id,techId,techName,deptName,email
+        from tb_teacher t
+        INNER JOIN tb_dept d ON t.techDept=d.deptId
+        <where>
+            <if test="techId!=null and techId!=''">
+                and techId like concat("%",#{techId},"%")
+            </if>
+            <if test="techName!=null and techName!=''">
+                and techName like concat("%",#{techName},"%")
+            </if>
+            <if test="deptName!=null and deptName!='' and deptName!=0">
+                and techDept like concat("%",#{deptName},"%")
+            </if>
+        </where>
+    </select>
+
+    <!--添加教师信息到教师表-->
+    <insert id="insertTeacherInfo" parameterType="top.lemenk.sys.entity.Teacher">
+        insert into tb_teacher(
+        techId, techName, techDept, email
+        )VALUES(
+        #{techId},
+        #{techName},
+        #{deptName},
+        #{email}
+        )
+    </insert>
+
+
+    <!--查询教师信息-->
+    <select id="teacherInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_teacher
+        where techId=#{techId}
+    </select>
+
+    <!--通过教师编号删除教师-->
+    <delete id="deleteByTechId" parameterType="string">
+        delete
+        from tb_teacher
+        where techId=#{techId}
+    </delete>
+
+</mapper>

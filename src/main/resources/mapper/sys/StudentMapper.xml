@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lemenk.sys.mapper.StudentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.lemenk.sys.entity.Student">
+        <id column="id" property="id" />
+        <result column="stu_no" property="stuNo" />
+        <result column="stu_name" property="stuName" />
+        <result column="email" property="email" />
+        <result column="phone" property="phone" />
+        <result column="stu_dept" property="stuDept" />
+        <result column="class_name" property="className" />
+        <result column="home_address" property="homeAddress" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, stu_no, stu_name, email, phone, stu_dept, class_name, home_address
+    </sql>
+
+    <!--添加学生信息到学生表-->
+    <insert id="insertStudentInfo" parameterType="top.lemenk.sys.vo.StudentVo">
+        insert into tb_student(
+        stu_no, stu_name, email, phone, stu_dept, class_name, home_address
+        )VALUES(
+        #{stuNo},
+        #{stuName},
+        #{email},
+        #{phone},
+        #{deptName},
+        #{className},
+        #{homeAddress}
+        )
+    </insert>
+
+    <!--根据学号查询学生信息-->
+    <select id="studentInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_student
+        where stu_no=#{stuNo}
+    </select>
+
+    <!--查询学生详细信息-->
+    <select id="queryAllStudent" resultType="top.lemenk.sys.vo.StudentVo">
+        select s.id,stu_no,stu_name,email,phone,deptName,class_name,home_address
+        from tb_student s
+        INNER JOIN tb_dept d ON s.stu_dept=d.deptId
+        <where>
+            <if test="stuNo!=null and stuNo!=''">
+                and stu_no like concat("%",#{stuNo},"%")
+            </if>
+            <if test="stuName!=null and stuName!=''">
+                and stu_name like concat("%",#{stuName},"%")
+            </if>
+            <if test="deptName!=null and deptName!='' and deptName!=0">
+                and stu_dept like concat("%",#{deptName},"%")
+            </if>
+            <if test="className!=null and className!=''">
+                and class_ame like concat("%",#{className},"%")
+            </if>
+        </where>
+    </select>
+
+    <!--使用学生学号删除学生表信息-->
+    <delete id="deleteByStuNo" parameterType="string">
+        delete
+        from tb_student
+        where stu_no=#{stuNo}
+    </delete>
+</mapper>

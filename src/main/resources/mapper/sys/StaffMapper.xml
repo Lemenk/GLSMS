@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lemenk.sys.mapper.StaffMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.lemenk.sys.entity.Staff">
+        <id column="id" property="id" />
+        <result column="staId" property="staId" />
+        <result column="staName" property="staName" />
+        <result column="staDept" property="staDept" />
+        <result column="email" property="email" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, staId, staName, staDept,email
+    </sql>
+
+
+    <!--查询所有工作人员的信息-->
+    <select id="queryAllStaff" resultMap="BaseResultMap">
+        select s.id,staId,staName,deptName,email
+        from tb_staff s
+        INNER JOIN tb_dept d ON s.staDept=d.deptId
+        <where>
+            <if test="staId!=null and staId!=''">
+                and staId like concat("%",#{staId},"%")
+            </if>
+            <if test="staName!=null and staName!=''">
+                and staName like concat("%",#{staName},"%")
+            </if>
+            <if test="deptName!=null and deptName!='' and deptName!=0">
+                and staDept like concat("%",#{deptName},"%")
+            </if>
+        </where>
+    </select>
+
+    <!--添加工作人员信息到工作人员表-->
+    <insert id="insertStaffInfo" parameterType="top.lemenk.sys.entity.Staff">
+        insert into tb_staff(
+        staId, staName, staDept, email
+        )VALUES(
+        #{staId},
+        #{staName},
+        #{deptName},
+        #{email}
+        )
+    </insert>
+
+    <!--使用工作人员编号删除工作人员表信息-->
+    <delete id="deleteByStaId" parameterType="string">
+        delete
+        from tb_staff
+        where staId=#{staId}
+    </delete>
+
+
+    <select id="staffInfo" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_staff
+        where staId=#{staId}
+    </select>
+</mapper>

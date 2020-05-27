@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lemenk.common.mapper.StudentProcessMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.lemenk.common.entity.StudentProcess">
+        <id column="id" property="id"/>
+        <result column="proc_id" property="procId"/>
+        <result column="stu_id" property="stuId"/>
+        <result column="status" property="status"/>
+        <result column="apply_time" property="applyTime"/>
+        <result column="handler" property="handler"/>
+        <result column="handle_time" property="handleTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, proc_id, stu_id, status, apply_time,handler, handle_time
+    </sql>
+    <select id="queryStudentProcessByStuId" resultMap="BaseResultMap">
+        SELECT csp.id,proc_id,proc_name,status,apply_time,handle_time,handler
+        FROM comm_student_process csp
+        INNER JOIN sys_process sp ON sp.id=csp.proc_id
+        WHERE csp.stu_id
+        IN(
+            SELECT s.id
+            FROM tb_student s
+            INNER JOIN tb_user u ON s.stu_no=u.username
+            WHERE u.id=#{stuId}
+            )
+    </select>
+
+    <!--通过学生表id查询是否是第一次登陆-->
+    <select id="selectYesOrNoFirstLogin" resultType="java.lang.String">
+        SELECT IFNULL((SELECT 'Y' from comm_student_process where stu_id=#{stuId} limit 1),'N')
+    </select>
+
+
+</mapper>

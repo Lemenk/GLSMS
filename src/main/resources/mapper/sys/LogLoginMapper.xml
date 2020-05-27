@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lemenk.sys.mapper.LogLoginMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.lemenk.sys.entity.LogLogin">
+        <id column="id" property="id" />
+        <result column="login_role" property="loginRole" />
+        <result column="login_username" property="loginUsername" />
+        <result column="login_ip" property="loginIp" />
+        <result column="login_time" property="loginTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, login_role, login_username, login_ip, login_time
+    </sql>
+
+    <!--查询所有登录日志-->
+    <select id="queryAllLogLogin" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_log_login
+        <where>
+            <if test="loginRole!=null and loginRole!=''">
+                and login_role like concat("%",#{loginRole},"%")
+            </if>
+            <if test="loginUsername!=null and loginUsername!=''">
+                and login_username like concat("%",#{loginUsername},"%")
+            </if>
+            <if test="startTime!=null">
+                and login_time >=#{startTime}
+            </if>
+            <if test="endTime!=null">
+                and login_time <![CDATA[<=]]> #{endTime}
+            </if>
+        </where>
+        order by login_time desc
+    </select>
+
+</mapper>

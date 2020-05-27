@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lemenk.sys.mapper.DeptMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.lemenk.sys.entity.Dept">
+        <id column="id" property="id" />
+        <result column="deptId" property="deptId" />
+        <result column="deptName" property="deptName" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, deptId, deptName
+    </sql>
+
+    <!--根据部门id查询部门信息-->
+    <select id="queryDeptByDeptId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_dept
+        where deptId = #{deptId}
+    </select>
+
+    <!--查询所有的管理后勤部门-->
+    <select id="queryStaDept" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_dept
+        where id between 1 and 4
+    </select>
+
+    <!--查询所有的学院-->
+    <select id="queryColDept" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_dept
+        where id > 4
+    </select>
+
+    <!--查询所有部门-->
+    <select id="queryAllDept" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from tb_dept
+    </select>
+
+    <!--查询最后一行-->
+    <select id="queryLastRow" resultMap="BaseResultMap">
+        select * from tb_dept order by id desc limit 1
+    </select>
+
+</mapper>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lemenk.common.mapper.StatMapper">
+
+    <!--查询申请信息-->
+    <select id="queryApply" resultType="top.lemenk.common.entity.BaseEntity">
+        SELECT `status` as `name`,COUNT(1) AS `value`
+        FROM comm_student_process
+        GROUP BY `status` ORDER BY `status`
+    </select>
+
+    <!--查询所有处理-->
+    <select id="queryHandle" resultType="top.lemenk.common.entity.BaseEntity">
+        SELECT `status` as `name`,COUNT(1) AS `value`
+        FROM comm_apply_handle
+        GROUP BY `status` ORDER BY `status`
+    </select>
+</mapper>

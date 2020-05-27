@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.lemenk.common.mapper.ApplyHandleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="top.lemenk.common.entity.ApplyHandle">
+        <id column="id" property="id"/>
+        <result column="csp_id" property="cspId"/>
+        <result column="status" property="status"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, csp_id, status, remark
+    </sql>
+
+    <!--通过教师的教师号查询当前教师所属学院的学生的申请信息-->
+    <select id="queryApplyInfoByTechNo" resultMap="BaseResultMap">
+        SELECT cah.id,stu_no,stu_name,stu_dept,class_name,cah.status,apply_time,handle_time, handler, remark
+        FROM comm_apply_handle cah
+        INNER JOIN comm_student_process csp
+        INNER JOIN tb_student s
+        ON( s.id=csp.stu_id AND cah.csp_id=csp.id)
+        <where>
+            <if test="status!=null and status!=''">
+                and cah.status like concat("%",#{status},"%")
+            </if>
+            AND proc_id=5
+            AND stu_id IN(
+            SELECT id
+            FROM tb_student s
+            WHERE stu_dept IN(
+            SELECT techDept
+            FROM tb_teacher t
+            WHERE t.techId=#{techNo}
+            )
+            )
+        </where>
+        order by apply_time asc
+    </select>
+
+    <!--通过工作人员的编号查询所属部门下的学生的申请信息-->
+    <select id="queryApplyInfoByStaNo" resultMap="BaseResultMap">
+        SELECT cah.id,stu_no,stu_name,cah.status,apply_time,handle_time, handler, remark
+        FROM comm_apply_handle cah
+        INNER JOIN comm_student_process csp
+        INNER JOIN tb_student s
+        ON( s.id=csp.stu_id AND cah.csp_id=csp.id)
+        <where>
+            <if test="status!=null and status!=''">
+                and cah.status like concat("%",#{status},"%")
+            </if>
+            AND proc_id IN(
+            SELECT staDept
+            FROM tb_staff sta
+            WHERE sta.staId=#{staffNo}
+            )
+        </where>
+        order by apply_time asc
+    </select>
+
+</mapper>
