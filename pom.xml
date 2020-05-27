@@ -26,38 +26,34 @@
       <version>4.11</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.apache.poi</groupId>
-      <artifactId>poi-ooxml</artifactId>
-      <version>4.1.0</version>
-    </dependency>
+
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>5.0.11.RELEASE</version>
+      <version>5.0.16.RELEASE</version>
     </dependency>
     <!--spring mvc-->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-webmvc</artifactId>
-      <version>5.0.11.RELEASE</version>
+      <version>5.0.16.RELEASE</version>
     </dependency>
     <!--Spring JDBC-->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>5.0.11.RELEASE</version>
+      <version>5.0.16.RELEASE</version>
     </dependency>
     <!--spring aop-->
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aop</artifactId>
-      <version>5.0.11.RELEASE</version>
+      <version>5.0.16.RELEASE</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-aspects</artifactId>
-      <version>5.0.11.RELEASE</version>
+      <version>5.0.16.RELEASE</version>
     </dependency>
     <!--MyBatis-->
     <!--<dependency>
@@ -151,12 +147,6 @@
       <groupId>com.google.zxing</groupId>
       <artifactId>javase</artifactId>
       <version>3.1.0</version>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/cn.hutool/hutool-all -->
-    <dependency>
-      <groupId>cn.hutool</groupId>
-      <artifactId>hutool-all</artifactId>
-      <version>5.1.0</version>
     </dependency>
 
     <dependency>
